@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Luke&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+  <title>
+    
+      Solving the Roman Numerals LeetCode problem with Python | Luke McAuley
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Luke McAuley</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Solving the Roman Numerals LeetCode problem with Python</h2>
+  <p class="post-date">2022-03-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="The-Problem"><a href="#The-Problem" class="headerlink" title="The Problem"></a>The Problem</h3><p>LeetCode states the problem as follows: </p>
+<p>Roman numerals are represented by seven different symbols: <code>I</code>, <code>V</code>, <code>X</code>, <code>L</code>, <code>C</code>, <code>D</code> and <code>M</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
+
+<p>For example, <code>2</code> is written as <code>II</code> in Roman numeral, just two one’s added together. 12 is written as <code>XII</code>, which is simply <code>X</code> + <code>II</code>. The number <code>27</code> is written as <code>XXVII</code>, which is <code>XX</code> + <code>V</code> + <code>II</code>.</p>
+<p>Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not <code>IIII</code>. Instead, the number four is written as <code>IV</code>. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:</p>
+<pre><code>I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+</code></pre>
+<p>Given a roman numeral, convert it to an integer.</p>
+<h3 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints"></a>Constraints</h3><p>There are a number of constraints for the issue as follows:</p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 15</code></li>
+<li><code>s</code> contains only the characters <code>(&#39;I&#39;, &#39;V&#39;, &#39;X&#39;, &#39;L&#39;, &#39;C&#39;, &#39;D&#39;, &#39;M&#39;)</code>.</li>
+<li>It is <strong>guaranteed</strong> that <code>s</code> is a valid roman numeral in the <code>[1, 3999]</code></li>
+</ul>
+<h3 id="The-Solution"><a href="#The-Solution" class="headerlink" title="The Solution"></a>The Solution</h3><p>So to begin solving this problem, we need to create a dictionary of the roman numerals and their corresponding values.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">numerals = &#123;</span><br><span class="line">            <span class="string">&quot;I&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&quot;V&quot;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&quot;X&quot;</span>: <span class="number">10</span>,</span><br><span class="line">            <span class="string">&quot;L&quot;</span>: <span class="number">50</span>,</span><br><span class="line">            <span class="string">&quot;C&quot;</span>: <span class="number">100</span>,</span><br><span class="line">            <span class="string">&quot;D&quot;</span>: <span class="number">500</span>,</span><br><span class="line">            <span class="string">&quot;M&quot;</span>: <span class="number">1000</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Then we have to do some base case removal. In other words, if the inputted string is empty we return <code>0</code>, or if the string is already in the dictionary by itself we return the value of that string in the dictionary.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> s == <span class="string">&quot;&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> s <span class="keyword">in</span> numerals:</span><br><span class="line">    <span class="keyword">return</span> numerals[s]</span><br></pre></td></tr></table></figure>
+
+<p>And finally to the meat of the solution. To solve this, we set two variables, <code>prev</code> and <code>total</code>. We set the former to <code>None</code> and the latter to <code>0</code>.</p>
+<p>We then loop through the inputted string using reverse indexing, i.e. from the end of the string towards the beginning like this: &#96;for letter in s[::-1]:&#96;&#96;</p>
+<p>We store the numeral value of the inputted Roman Numeral in a variable called <code>value</code>: <code>value = numerals[letter]</code>.</p>
+<p>Then we use an <code>if</code> statement to compare <code>letter</code> to <code>prev</code>, and if the current letter is before another Roman Numeral that would imply that it is a combination Roman Numeral such as <code>IV</code> &#x3D; <code>4</code>, we subtract it from the total. Else, we add it to the total.</p>
+<p>After each iteration of the loop, we assign the value of <code>letter</code> to the variable <code>prev</code> to be used in the following iteration of the loop.</p>
+<p>After the loop the total is returned. </p>
+<p>This solution worked for all test cases in the integrated LeetCode IDE.</p>
+<h3 id="Full-code-of-the-solution"><a href="#Full-code-of-the-solution" class="headerlink" title="Full code of the solution"></a>Full code of the solution</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">romanToInt</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        numerals = &#123;</span><br><span class="line">        <span class="string">&quot;I&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;V&quot;</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="string">&quot;X&quot;</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="string">&quot;L&quot;</span>: <span class="number">50</span>,</span><br><span class="line">        <span class="string">&quot;C&quot;</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="string">&quot;D&quot;</span>: <span class="number">500</span>,</span><br><span class="line">        <span class="string">&quot;M&quot;</span>: <span class="number">1000</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> s == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> s <span class="keyword">in</span> numerals:</span><br><span class="line">            <span class="keyword">return</span> numerals[s]</span><br><span class="line">        </span><br><span class="line">        prev = <span class="literal">None</span></span><br><span class="line">        total = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> letter <span class="keyword">in</span> s[::-<span class="number">1</span>]:</span><br><span class="line">            value = numerals[letter]</span><br><span class="line">            <span class="keyword">if</span>  ((letter == <span class="string">&#x27;I&#x27;</span> <span class="keyword">and</span> prev <span class="keyword">in</span> (<span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;X&#x27;</span>)) <span class="keyword">or</span> </span><br><span class="line">                (letter == <span class="string">&#x27;X&#x27;</span> <span class="keyword">and</span> prev <span class="keyword">in</span> (<span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)) <span class="keyword">or</span> </span><br><span class="line">                (letter == <span class="string">&#x27;C&#x27;</span> <span class="keyword">and</span> prev <span class="keyword">in</span> (<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;M&#x27;</span>))):</span><br><span class="line">                total -= value</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                total += value</span><br><span class="line">            </span><br><span class="line">            prev = letter</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#python" >
+    <span class="tag-code">python</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/02/28/hello-world/">
+        <span class="nav-arrow">← </span>
+        
+          My experience with Hexo
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    
+   
+    
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#The-Problem"><span class="toc-nav-text">The Problem</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Constraints"><span class="toc-nav-text">Constraints</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#The-Solution"><span class="toc-nav-text">The Solution</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Full-code-of-the-solution"><span class="toc-nav-text">Full code of the solution</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://LukeMcAuleyDublin.github.io/2022/03/07/Solving-the-Roman-Numerals-LeetCode-problem-with-Python/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    | &copy; 2022 Luke McAuley |
+    <br>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
